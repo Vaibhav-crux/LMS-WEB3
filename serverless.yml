@@ -1,0 +1,73 @@
+app: lms-user-v2
+service: lms-user-v2
+
+custom:
+  stage: "${opt:stage, 'tst'}"
+  db: "mongodb+srv://how3:zJA6GKeimXAJJBG8@editorapi.aiarnwk.mongodb.net/Lmsapi-tst?retryWrites=true&w=majority"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${self:custom.stage}
+  timeout: 850
+  memorySize: 1024
+  environment:
+    STAGE: ${self:provider.stage}
+    MONGODB_URI: ${self:custom.db}
+
+plugins:
+  - serverless-offline
+
+functions:
+  api:
+    handler: index.handler
+    events:
+      - http:
+          path: /user/register
+          method: POST
+          cors: true
+      - http: 
+          path: /user/courseFeedback
+          method: POST
+          cors: true
+      - http: 
+          path: /user/chapterFeedback
+          method: POST
+          cors: true
+      - http:
+          path: /user/raiseFlag
+          method: POST
+          cors: true
+      - http:
+          path: /user/myCourse
+          method: GET
+          cors: true
+      - http:
+          path: /course
+          method: GET
+          cors: true
+      - http:
+          path: /courses
+          method: GET
+          cors: true
+      - http:
+          path: /chapter
+          method: GET
+          cors: true 
+      - http:
+          path: /user/getStatus
+          method: GET
+          cors : true      
+      - http:
+          path: /user/markQuizScore
+          method: POST
+          cors: true
+      - http:
+          path: /user/myprogress
+          method: GET
+          cors: true 
+      - http:
+          path: /user/checkStatusofCourse
+          method: GET
+          cors: true 
+    
